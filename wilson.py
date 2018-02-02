@@ -44,9 +44,9 @@ def plot_wilson_path():
     ax.set_xlim(0,pathlength)
     # y-axis
     ax.set_ylabel('$\mathcal{P}_\mathrm{i}$')
-    ax.set_ylim((-1.1,1.1))
-    ax.set_yticks([-1,0,1])
-    ax.set_yticklabels(['-1','0','1'])
+    ax.set_ylim((-1.1*np.pi,1.1*np.pi))
+    ax.set_yticks([-np.pi,0,np.pi])
+    ax.set_yticklabels([r'$-\pi$','0',r'$\pi$'])
     for i in range(nocc):
         #ax.plot(np.imag(wilsoneigs[:,i]),'ro',markersize=1)
         ax.plot(np.real(wilsoneigs[:,i]),'o--',markersize=2+2*(nocc-i))
@@ -85,9 +85,11 @@ def wilson(k):
         linkmatrix = vecs[z].T.conj() @ vecs[z+1]
         wilsonmatrix = wilsonmatrix @ linkmatrix/( np.abs(np.linalg.det(linkmatrix)) )
         #correction += -1j*1/2*vecs[z,1]*vecs[z,1].conj()*2*np.pi/(m)
+    
+    # close the loop with the initial eigen vector
     wilsonmatrix = wilsonmatrix @ ( vecs[m].T.conj() @ vecs[0] )
     wilson_eigenvalues, wilson_eigenvectors = np.linalg.eig(wilsonmatrix)
     # add convergence factor to avoid jumps at the branch cut
     wilson_eigenvalues += -1e-14j
-    return +1j/np.pi*(np.log(wilson_eigenvalues) )
+    return +1j*np.log(wilson_eigenvalues)
 
