@@ -1,6 +1,6 @@
-# This is hamiltonian.py
+# This is hamiltonian2.py
 #
-# Purpose: Define a Hamiltonian central for various scripts
+# Purpose: Define an alternative Hamiltonian
 
 import numpy as np
 import lattice
@@ -16,15 +16,17 @@ from lattice import a, b, c, ab
 
 # intra orbital hopping
 # orbital 1
-t1_nu  = +3. 
-t1_par = +0.6
-t1_bot = +1.0
+t1_nu  = +2. 
+t1_par = +0.5
+t1_bot = +0.5
 # orbital 2
 t2_nu  = -t1_nu 
 t2_par = -t1_par
 t2_bot = -t1_bot
 
 # inter orbital hopping
+# with dispersion sin(kc) instead of sin(kc/2)
+# see below
 t_12= +0.50
 
 # SOC induced mixing
@@ -63,8 +65,8 @@ def h(k):
     h = np.zeros((2,2),dtype=complex)
     h[0,0] = M1h(k) -2*t1_bot*np.cos(np.dot(k,c))
     h[1,1] = M2h(k) - 2*t2_bot*np.cos(np.dot(k,c))
-    h[0,1] = -2j*Ah(k)*np.sin(np.dot(k,c)/2)    
-    h[1,0] = +2j*Ah(k)*np.sin(np.dot(k,c)/2)
+    h[0,1] = -2j*Ah(k)*np.sin(np.dot(k,c))    
+    h[1,0] = +2j*Ah(k)*np.sin(np.dot(k,c))
     return h
 
 # SOC terms ######################################################

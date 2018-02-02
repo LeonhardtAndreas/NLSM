@@ -16,7 +16,7 @@ import matplotlib
 import lattice
 import hamiltonian
 import surfstates as surf
-
+import wilson
 
 
 # define which functions to run by uncommenting the proper lines
@@ -28,12 +28,13 @@ def main():
     # SURFACE STATES ##############################################
     
     # calculate and plot the LDOS at the surface
-    surf.plot_ldos()
+    #surf.plot_ldos()
     
     # check the localization at a given k_parallel
-    k = 0.2*lattice.K_a
-    surf.plot_localization(k_par=k)
+    #k = 0.2*lattice.K_a
+    #surf.plot_localization(k_par=k)
     
+    wilson.plot_wilson_path()
 
 
 ##################################################################
