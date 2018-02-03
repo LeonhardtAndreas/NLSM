@@ -34,6 +34,9 @@ def plot_wilson_path():
     wilsoneigs = np.ones((pathlength,nocc),dtype=complex)   
     for x in range(pathlength):
         wilsoneigs[x] = wilson(kpath[x])
+
+    np.savetxt('current.csv', np.stack(kpath[:,0:2],wilsoneigs))
+
    
     fig, ax = plt.subplots()
     # x-axis
