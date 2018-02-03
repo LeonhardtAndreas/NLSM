@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import lattice
 from lattice import K_a, K_b, K_c
-import hamiltonian as hamiltonian
+import hamiltonian2 as hamiltonian
 
 
 
@@ -34,8 +34,16 @@ def plot_wilson_path():
     wilsoneigs = np.ones((pathlength,nocc),dtype=complex)   
     for x in range(pathlength):
         wilsoneigs[x] = wilson(kpath[x])
-
-    np.savetxt('current.csv', np.stack(kpath[:,0:2],wilsoneigs))
+    print(kpath.shape)
+    print(kpath[:,0].shape)
+    print(wilsoneigs.shape)
+    np.savetxt('current.csv', 
+                np.real(np.stack( ( kpath[:,0],
+                            kpath[:,1],
+                            wilsoneigs[:,0],
+                            wilsoneigs[:,1] )
+                        ,axis=-1)) 
+                ,delimiter = ', ' )
 
    
     fig, ax = plt.subplots()
