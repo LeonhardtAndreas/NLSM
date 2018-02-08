@@ -63,7 +63,7 @@ def Ah(k):
 # spinless Hamiltonian
 def h(k):
     h = np.zeros((2,2),dtype=complex)
-    h[0,0] = M1h(k) -2*t1_bot*np.cos(np.dot(k,c))
+    h[0,0] = M1h(k) - 2*t1_bot*np.cos(np.dot(k,c))
     h[1,1] = M2h(k) - 2*t2_bot*np.cos(np.dot(k,c))
     h[0,1] = -2j*Ah(k)*np.sin(np.dot(k,c))    
     h[1,0] = +2j*Ah(k)*np.sin(np.dot(k,c))
@@ -99,7 +99,7 @@ def H(k):
     ## inter spin hopping
     H[0,2] =  ( Rh(k_par)+Dh(k_par) )
     H[1,3] = -( Rh(k_par)+Dh(k_par) )
-    H[2:4,0:2] = H[0:2,2:4].conjugate()
+    H[2:4,0:2] = H[0:2,2:4].conj()
     return H
 
 
@@ -125,14 +125,12 @@ def h_z(k_par,n_z=100):
     a  = Ah(k_par)
     # building blocks h(i) and t(i)
     # of size blocksize
-    M_n = np.array([
-            [m1             , a         ],
-            [a.conjugate()  , m2        ]
-            ])
-    T_n = np.array([
-            [ -c1       , 0         ],
-            [ -a.conjugate(), -c2   ]
-            ]) 
+    M_n = np.array([[m1         , 0     ],
+                    [ 0         , m2    ]])
+
+    T_n = np.array([[ -c1       , a     ],
+                    [-np.conj(a), -c2   ]])
+
     # blocksize bs
     bs = M_n.shape[0]
 
@@ -170,17 +168,15 @@ def H_z(k_par,n_z=100):
     # of size blocksize
 
     M_n = np.array([
-            [ m1                , a             , r+d           , 0         ],
-            [ a.conjugate()     , m2            , 0             ,-r-d       ],
-            [r.conjugate()+d.conjugate(), 0     , m1            , a         ],
-            [ 0 ,-r.conjugate()-d.conjugate()   , a.conjugate() , m2        ]
-            ])
+            [ m1            , 0     , r+d       , 0     ],
+            [ 0             , m2    , 0         ,-r-d   ],
+            [np.conj(r)+np.conj(d),0, m1        , 0     ],
+            [0,-np.conj(r)-np.conj(d),0         , m2    ]])
     T_n = np.array([
-            [ -c1           , 0     , 0             , 0   ],
-            [ -a.conjugate(), -c2   , 0             , 0   ],
-            [ 0             , 0     ,-c1            , 0   ],
-            [ 0             , 0     ,-a.conjugate() , -c2 ]
-            ])
+            [ -c1           , a     , 0         , 0   ],
+            [ -np.conj(a)   , -c2   , 0         , 0   ],
+            [ 0             , 0     ,-c1        , a   ],
+            [ 0             , 0     ,-np.conj(a), -c2 ]])
 
     # blocksize bs
     bs = M_n.shape[0]
