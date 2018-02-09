@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import lattice
 from lattice import K_a, K_b, K_c
-import hamiltonian as hamiltonian
+import hamiltonian2 as hamiltonian
 
 
 
@@ -76,8 +76,14 @@ def wilson(k):
 
         # numerical diagonalization
         evals, evecs = np.linalg.eigh(hamiltonian.H(k_step))
-        ind = np.argsort(np.real(evals))[0:2]
-        vecs[z] = evecs[:,ind]
+        ind = np.argsort(np.real(evals))
+        # check for well defined gap
+        if ( evals[ind[2]] - evals[ind[1]] ) < 1e-1:
+            # if the gap closes along the path, the berry
+            # phase is ill defined
+            return np.nan
+
+        vecs[z] = evecs[:,ind[0:2]]
 
     # calculate the Berry link variable etc.
     wilsonmatrix = np.identity(nocc,dtype=complex)
