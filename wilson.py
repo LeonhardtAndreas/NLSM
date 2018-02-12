@@ -50,7 +50,14 @@ def plot_wilson_path():
     for i in range(nocc):
         #ax.plot(np.imag(wilsoneigs[:,i]),'ro',markersize=1)
         ax.plot(np.real(wilsoneigs[:,i]),'o--',markersize=2+2*(nocc-i))
-
+    # gray out the areas which are not defined (i.e. have NaN as value)
+    cover_x = np.arange(pathlength)
+    cover_y = np.ones(pathlength)*10
+    cover_x = cover_x[np.isnan(wilsoneigs[:,0])] + 0.5
+    cover_y = cover_y[np.isnan(wilsoneigs[:,0])]
+    cover_x = np.concatenate((cover_x,cover_x[::-1]))
+    cover_y = np.concatenate((cover_y,-cover_y))
+    ax.fill(cover_x,cover_y,'tab:gray',zorder=10,hatch='//') 
     plt.show()
 
 
@@ -77,8 +84,11 @@ def wilson(k):
         # numerical diagonalization
         evals, evecs = np.linalg.eigh(hamiltonian.H(k_step))
         ind = np.argsort(np.real(evals))
-        # check for well defined gap
-        if ( evals[ind[2]] - evals[ind[1]] ) < 1e-1:
+        # check for well defined gap along the path
+        # with the hack of looking only for band crossings out
+        # of the k_z=0 plane
+        if ( np.abs(k_step[2]) > 0.1 and 
+                ( evals[ind[2]] - evals[ind[1]] ) < 2e+0/m ):
             # if the gap closes along the path, the berry
             # phase is ill defined
             return np.nan
