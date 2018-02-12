@@ -34,7 +34,9 @@ def plot_wilson_path():
     wilsoneigs = np.ones((pathlength,nocc),dtype=complex)   
     for x in range(pathlength):
         wilsoneigs[x] = wilson(kpath[x])
-   
+    np.savetxt('./wilson_current.csv',
+            np.array([kpath[:,0],kpath[:,1],
+                    np.real(wilsoneigs[:,0]),np.real(wilsoneigs[:,1])]).T)
     fig, ax = plt.subplots()
     # x-axis
     # label path according to segments defined above
@@ -88,7 +90,7 @@ def wilson(k):
         # with the hack of looking only for band crossings out
         # of the k_z=0 plane
         if ( np.abs(k_step[2]) > 0.1 and 
-                ( evals[ind[2]] - evals[ind[1]] ) < 2e+0/m ):
+                ( evals[ind[2]] - evals[ind[1]] ) < 1e+1/m ):
             # if the gap closes along the path, the berry
             # phase is ill defined
             return np.nan
