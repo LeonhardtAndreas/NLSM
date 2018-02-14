@@ -101,7 +101,10 @@ def wilson(k):
     wilsonmatrix = np.identity(nocc,dtype=complex)
     for z in range(m):
         linkmatrix = vecs[z].T.conj() @ vecs[z+1]
-        wilsonmatrix = wilsonmatrix @ linkmatrix/( np.abs(np.linalg.det(linkmatrix)) )
+        # ensure that the link matrix is unitary
+        # by dividing by the nocc'th root of the determinant (multilinearity)
+        det_correction_factor = np.abs(np.linalg.det(linkmatrix))**(1/nocc)
+        wilsonmatrix = wilsonmatrix @ linkmatrix/( det_correction_factor )
         #correction += -1j*1/2*vecs[z,1]*vecs[z,1].conj()*2*np.pi/(m)
     
     # close the loop with the initial eigen vector
