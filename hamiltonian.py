@@ -28,7 +28,7 @@ t2_bot = -t1_bot
 t_12= +0.50
 
 # SOC induced mixing
-L_Rashba   = 0.0 
+L_Rashba   = 0.2 
 L_Dresselh = 0.0
 
 c1 = t1_bot

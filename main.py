@@ -14,7 +14,7 @@ from datetime import datetime
 import matplotlib
 
 import lattice
-import hamiltonian
+import hamiltonian2 as hamiltonian
 import surfstates as surf
 import wilson
 
@@ -31,10 +31,9 @@ def main():
     #surf.plot_ldos()
     
     # check the localization at a given k_parallel
-    #k = 0.2*lattice.K_a
-    #surf.plot_localization(k_par=k)
+    surf.plot_localization()
     
-    wilson.plot_wilson_path()
+    #wilson.plot_wilson_path()
 
 
 ##################################################################
